@@ -27,9 +27,6 @@ const MarqueeSection = () => {
       className="gt-marque-section"
       style={{ position: "relative", zIndex: 1 }}
     >
-      <div className="overlay-shape">
-        <img src="/assets/img/home-1/overlay.png" alt="img" />
-      </div>
 
       {/* Top Marquee (left to right) */}
       <div className="marquee-text-slider-3 style-11">
