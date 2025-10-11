@@ -244,7 +244,7 @@ Question {idx + 1}. {q.text}
                       ) : (
                         <input
                           type="text"
-                          value={answers[mod.id]?.[q.id] || ""}
+                          value={answers[mod.id]?.[q.Fid] || ""}
                           onChange={(e) =>
                             handleInputChange(mod.id, q.id, e.target.value)
                           }
@@ -290,18 +290,51 @@ Question {idx + 1}. {q.text}
           ))}
 
           <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              maxWidth: 1200,
-              margin: "24px auto 0",
-              padding: "0 24px",
-            }}
-          >
-            <Link to={`/labs/${parseInt(id) + 1}`} className="lab-nav-btn">
-              Next Lab →
-            </Link>
-          </div>
+  style={{
+    display: "flex",
+    justifyContent: "space-between", // ✅ spread out both buttons
+    maxWidth: 1200,
+    margin: "24px auto 0",
+    padding: "0 24px",
+  }}
+>
+  {/* ✅ Show Previous button only if not the first lab */}
+  {parseInt(id) > 1 ? (
+    <Link
+      to={`/labs/${parseInt(id) - 1}`}
+      className="lab-nav-btn"
+      style={{
+        background: "#0FA30F",
+        color: "#fff",
+        borderRadius: 4,
+        padding: "10px 24px",
+        fontWeight: 700,
+        textDecoration: "none",
+      }}
+    >
+      ← Previous Lab
+    </Link>
+  ) : (
+    <div /> // keeps spacing balanced when no previous lab
+  )}
+
+  {/* ✅ Existing Next Lab button */}
+  <Link
+    to={`/labs/${parseInt(id) + 1}`}
+    className="lab-nav-btn"
+    style={{
+      background: "#0FA30F",
+      color: "#fff",
+      borderRadius: 4,
+      padding: "10px 24px",
+      fontWeight: 700,
+      textDecoration: "none",
+    }}
+  >
+    Next Lab →
+  </Link>
+</div>
+
         </div>
       </section>
     </Layout>
