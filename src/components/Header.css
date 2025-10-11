@@ -1,0 +1,331 @@
+/* ===== Header Base ===== */
+.header-1 {
+  background: transparent !important;
+  color: #e4e4e4;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transition: background 0.2s ease, top 0.3s ease;
+}
+
+.header-1.scrolled {
+  background: transparent !important;
+}
+
+.header-1.hide {
+  top: -100px;
+}
+
+/* ===== Header Layout ===== */
+.header-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 30px;
+  flex-wrap: wrap;
+}
+
+/* ===== Logo ===== */
+.logo img {
+  max-height: 100px; /* Larger logo */
+  width: auto;
+  transition: all 0.3s ease;
+}
+
+/* ===== Navigation Menu ===== */
+.main-menu ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.main-menu ul li {
+  position: relative;
+}
+
+.main-menu ul li a {
+  color: #e4e4e4;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.main-menu ul li a:hover {
+  color: #0FA30F;
+}
+
+/* ===== Dropdown Menu (with 1.5 s hide delay) ===== */
+.main-menu ul li ul.submenu {
+  display: block;
+  position: absolute;
+  background: rgba(27, 27, 31, 0.98);
+  border-radius: 6px;
+  padding: 10px 0;
+  top: 95%; /* reduce gap */
+  left: 0;
+  min-width: 200px;
+  z-index: 1100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(5px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0s linear 1.5s; /* delay hide by 1.5s */
+}
+
+/* Show instantly on hover */
+.main-menu ul li:hover > ul.submenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+/* Keep visible when hovering submenu */
+.main-menu ul li ul.submenu:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.main-menu ul li ul.submenu li {
+  padding: 8px 16px;
+}
+
+.main-menu ul li ul.submenu li a {
+  color: #fff;
+  font-size: 0.95rem;
+  display: block;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.main-menu ul li ul.submenu li a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #0FA30F;
+}
+
+/* ===== Header Right Side ===== */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-right button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #e4e4e4;
+  transition: color 0.2s;
+}
+
+.header-right button:hover {
+  color: #0FA30F;
+}
+
+/* ===== Auth Buttons (FORCE GREEN) ===== */
+.login-btn,
+.join-btn {
+  background-color: #0FA30F !important; /* force green */
+  color: #ffffff !important;            /* force white text */
+  border: none !important;
+  padding: 8px 18px !important;
+  border-radius: 5px !important;
+  cursor: pointer !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  transition: background-color 0.25s ease, transform 0.2s ease !important;
+}
+
+.login-btn:hover,
+.join-btn:hover {
+  background-color: #0c8e0c !important; /* darker green */
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+/* ===== Profile Dropdown ===== */
+.profile-menu {
+  position: relative;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background: rgba(27, 27, 31, 0.98);
+  color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  min-width: 180px;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.profile-dropdown a,
+.profile-dropdown button {
+  padding: 10px 16px;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: none;
+  text-align: left;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.profile-dropdown a:hover,
+.profile-dropdown button:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ===== Hamburger Menu ===== */
+.hamburger {
+  display: none;
+  font-size: 28px;
+  color: #e4e4e4;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.hamburger:hover {
+  color: #0FA30F;
+}
+
+/* ===== Mobile Menu (slide-in) ===== */
+@media (max-width: 992px) {
+  .hamburger {
+    display: block;
+  }
+
+  .main-menu ul {
+    flex-direction: column;
+    background: rgba(10, 10, 10, 0.98);
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100vh;
+    padding: 100px 20px;
+    transition: right 0.3s ease;
+    z-index: 1100;
+  }
+
+  .main-menu ul.active {
+    right: 0;
+  }
+
+  .main-menu ul li {
+    margin-bottom: 20px;
+  }
+
+  .main-menu ul li a {
+    font-size: 1.1rem;
+  }
+
+  .header-main {
+    padding: 10px 20px;
+  }
+
+  .header-right {
+    gap: 12px;
+  }
+}
+
+/* ===== Search Modal ===== */
+.search-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.search-modal input {
+  width: 90%;
+  max-width: 600px;
+  padding: 16px 24px;
+  font-size: 1.3rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  margin-bottom: 30px;
+}
+
+.search-modal ul {
+  list-style: none;
+  padding: 0;
+  width: 90%;
+  max-width: 600px;
+}
+
+.search-modal li {
+  padding: 10px 16px;
+}
+
+.search-modal a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* ===== Small Screen Adjustments ===== */
+@media (max-width: 600px) {
+  .header-main {
+    padding: 8px 16px;
+  }
+
+  .logo img {
+    max-height: 80px;
+  }
+
+  .main-menu ul {
+    width: 80%;
+  }
+
+  .main-menu ul li a {
+    font-size: 1rem;
+  }
+
+  .header-right {
+    gap: 8px;
+  }
+
+  .search-modal input {
+    font-size: 1rem;
+    padding: 12px 18px;
+  }
+
+  .search-modal a {
+    font-size: 1rem;
+  }
+}

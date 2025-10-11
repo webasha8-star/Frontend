@@ -3,7 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import { Users, ClipboardList, FilePlus } from "lucide-react"; // ✅ Added icons
+import { Users, ClipboardList, FilePlus } from "lucide-react"; 
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("users");

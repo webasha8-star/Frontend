@@ -26,10 +26,8 @@ const HeroSection = () => {
                  Level Up Your Hacking Skills
               </h1>
               <div className="gt-hero-button wow animated-image">
-                <a href="/labs/1" className="gt-theme-btn">Start Playing</a>
-                {/* <a href="/game" className="gt-theme-btn gt-style-border">
-                   Explore Challenges
-                </a> */}
+                <a href="/labs/1" className="gt-theme-btn">Start Learning</a>
+
               </div>
             </div>
           </div>
