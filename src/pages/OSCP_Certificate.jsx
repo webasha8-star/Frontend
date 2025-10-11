@@ -383,7 +383,7 @@ function OSCP_Certificate () {
                       “CrackMeNow’s OSCP prep landed me my dream job!” — Jane D., 2024
                     </p>
                     <a
-                      href="#"
+                      href="/labs/1"
                       style={{
                         display: "inline-block",
                         padding: isMobile ? "10px 20px" : "12px 32px",
