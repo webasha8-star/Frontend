@@ -16,7 +16,7 @@ const SignUpForm = () => {
     setSuccess("");
 
     try {
-      await axios.post("http://localhost:5000/api/users/admin/register", {
+      await axios.post("http://localhost:5000/api/users/register", {
   username,
   email,
   password,
@@ -110,7 +110,7 @@ const SignUpForm = () => {
       width: "100%",
       padding: "10px 20px",
       outline: "none",
-      border: "none",
+      // border: "none",
       fontSize: "1em",
       color: "#fff",
       background: "#0000001a",

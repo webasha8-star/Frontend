@@ -3,7 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import { Users, ClipboardList, FilePlus } from "lucide-react"; 
+import { Users, ClipboardList, FilePlus } from "lucide-react";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("users");
@@ -15,10 +15,13 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const role = localStorage.getItem("role");
-    if (role !== "admin") {
+    if (!role || role.toUpperCase() !== "ADMIN") {
       navigate("/");
       return;
     }
+
+    if (!token) return;
+
 
     const fetchData = async () => {
       try {
@@ -139,9 +142,9 @@ const AdminDashboard = () => {
         </div>
 
         {/* ✅ Tab Content */}
-      {activeTab === "users" && <UserTable users={users} />}
-{activeTab === "submissions" && <SubmissionTable submissions={submissions} />}
-{activeTab === "createLab" && <CreateLabForm token={token} />}
+        {activeTab === "users" && <UserTable users={users} />}
+        {activeTab === "submissions" && <SubmissionTable submissions={submissions} />}
+        {activeTab === "createLab" && <CreateLabForm token={token} />}
 
       </div>
     </>
@@ -338,336 +341,336 @@ const CreateLabForm = ({ token }) => {
       </h2>
 
       <form onSubmit={handleSubmit}>
-  {/* Lab Info */}
-  <label style={{ color: "#22c55e", fontWeight: "bold" }}>Lab Title</label>
-  <input
-    value={title}
-    onChange={(e) => setTitle(e.target.value)}
-    placeholder="Enter lab title"
-    style={{
-      width: "100%",
-      marginBottom: "12px",
-      padding: "10px",
-      background: "#181c2a",
-      color: "#fff",
-      border: "1px solid #39FF14",
-      borderRadius: "6px",
-      outline: "none",
-    }}
-    required
-  />
+        {/* Lab Info */}
+        <label style={{ color: "#22c55e", fontWeight: "bold" }}>Lab Title</label>
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Enter lab title"
+          style={{
+            width: "100%",
+            marginBottom: "12px",
+            padding: "10px",
+            background: "#181c2a",
+            color: "#fff",
+            border: "1px solid #39FF14",
+            borderRadius: "6px",
+            outline: "none",
+          }}
+          required
+        />
 
-  <label style={{ color: "#22c55e", fontWeight: "bold" }}>Summary</label>
-  <textarea
-    value={summary}
-    onChange={(e) => setSummary(e.target.value)}
-    placeholder="Brief summary of the lab"
-    style={{
-      width: "100%",
-      marginBottom: "12px",
-      padding: "10px",
-      background: "#181c2a",
-      color: "#fff",
-      border: "1px solid #39FF14",
-      borderRadius: "6px",
-      outline: "none",
-      resize: "vertical",
-    }}
-  />
+        <label style={{ color: "#22c55e", fontWeight: "bold" }}>Summary</label>
+        <textarea
+          value={summary}
+          onChange={(e) => setSummary(e.target.value)}
+          placeholder="Brief summary of the lab"
+          style={{
+            width: "100%",
+            marginBottom: "12px",
+            padding: "10px",
+            background: "#181c2a",
+            color: "#fff",
+            border: "1px solid #39FF14",
+            borderRadius: "6px",
+            outline: "none",
+            resize: "vertical",
+          }}
+        />
 
-  <label style={{ color: "#22c55e", fontWeight: "bold" }}>Image URL (optional)</label>
-  <input
-    value={image}
-    onChange={(e) => setImage(e.target.value)}
-    placeholder="https://example.com/image.png"
-    style={{
-      width: "100%",
-      marginBottom: "20px",
-      padding: "10px",
-      background: "#181c2a",
-      color: "#fff",
-      border: "1px solid #39FF14",
-      borderRadius: "6px",
-      outline: "none",
-    }}
-  />
+        <label style={{ color: "#22c55e", fontWeight: "bold" }}>Image URL (optional)</label>
+        <input
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
+          placeholder="https://example.com/image.png"
+          style={{
+            width: "100%",
+            marginBottom: "20px",
+            padding: "10px",
+            background: "#181c2a",
+            color: "#fff",
+            border: "1px solid #39FF14",
+            borderRadius: "6px",
+            outline: "none",
+          }}
+        />
 
-  {/* Modules */}
-  {modules.map((mod, mIndex) => (
-    <div
-      key={mIndex}
-      style={{
-        border: "1px solid #333",
-        padding: "15px",
-        marginBottom: "20px",
-        borderRadius: "8px",
-      }}
-    >
-      <h3 style={{ color: "#22c55e" }}>MODULE {mIndex + 1}</h3>
-
-      <input
-        placeholder="Module Title"
-        value={mod.title}
-        onChange={(e) => {
-          const copy = [...modules];
-          copy[mIndex].title = e.target.value;
-          setModules(copy);
-        }}
-        style={{
-          width: "100%",
-          marginBottom: "12px",
-          padding: "10px",
-          background: "#181c2a",
-          color: "#fff",
-          border: "1px solid #39FF14",
-          borderRadius: "6px",
-          outline: "none",
-        }}
-        required
-      />
-
-      {mod.questions.map((q, qIndex) => (
-  <div
-    key={qIndex}
-    style={{
-      background: "#232323",
-      padding: "12px",
-      borderRadius: "8px",
-      marginBottom: "10px",
-      position: "relative",
-    }}
-  >
-    {/* ❌ Remove Question Button */}
-    <button
-      type="button"
-      onClick={() => {
-        const copy = [...modules];
-        copy[mIndex].questions.splice(qIndex, 1);
-        setModules(copy);
-      }}
-      style={{
-        position: "absolute",
-        top: "8px",
-        right: "8px",
-        background: "#ff3b3b",
-        color: "#fff",
-        border: "none",
-        borderRadius: "50%",
-        width: "25px",
-        height: "25px",
-        cursor: "pointer",
-        fontWeight: "bold",
-      }}
-      title="Remove Question"
-    >
-      ×
-    </button>
-
-    {/* Question Input */}
-    <input
-      placeholder="Question Text"
-      value={q.text}
-      onChange={(e) => {
-        const copy = [...modules];
-        copy[mIndex].questions[qIndex].text = e.target.value;
-        setModules(copy);
-      }}
-      style={{
-        width: "100%",
-        marginBottom: "12px",
-        padding: "10px",
-        background: "#181c2a",
-        color: "#fff",
-        border: "1px solid #39FF14",
-        borderRadius: "6px",
-        outline: "none",
-      }}
-      required
-    />
-
-    {/* Question Type */}
-    <label style={{ color: "#22c55e", fontWeight: "bold" }}>Question Type:</label>
-    <select
-      value={q.type}
-      onChange={(e) => {
-        const copy = [...modules];
-        copy[mIndex].questions[qIndex].type = e.target.value;
-        setModules(copy);
-      }}
-      style={{
-        width: "100%",
-        marginBottom: "10px",
-        padding: "10px",
-        background: "#181c2a",
-        color: "#fff",
-        border: "1px solid #39FF14",
-        borderRadius: "6px",
-        outline: "none",
-      }}
-    >
-      <option value="mcq">Multiple Choice (MCQ)</option>
-      <option value="text">Descriptive (Sentence)</option>
-    </select>
-
-    {/* Options for MCQs */}
-    {q.type === "mcq" &&
-      q.options.map((opt, optIndex) => (
-        <div key={optIndex} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <input
-            placeholder={`Option ${optIndex + 1}`}
-            value={opt}
-            onChange={(e) => {
-              const copy = [...modules];
-              copy[mIndex].questions[qIndex].options[optIndex] = e.target.value;
-              setModules(copy);
-            }}
+        {/* Modules */}
+        {modules.map((mod, mIndex) => (
+          <div
+            key={mIndex}
             style={{
-              flex: 1,
-              marginBottom: "8px",
-              padding: "10px",
-              background: "#181c2a",
-              color: "#fff",
-              border: "1px solid #39FF14",
-              borderRadius: "6px",
-              outline: "none",
+              border: "1px solid #333",
+              padding: "15px",
+              marginBottom: "20px",
+              borderRadius: "8px",
             }}
-          />
-          {/* ❌ Remove Option Button */}
-          <button
-            type="button"
-            onClick={() => {
-              const copy = [...modules];
-              copy[mIndex].questions[qIndex].options.splice(optIndex, 1);
-              setModules(copy);
-            }}
-            style={{
-              background: "#ff3b3b",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-              padding: "4px 8px",
-              cursor: "pointer",
-            }}
-            title="Remove Option"
           >
-            ×
-          </button>
-        </div>
-      ))}
+            <h3 style={{ color: "#22c55e" }}>MODULE {mIndex + 1}</h3>
 
-    {q.type === "mcq" && (
-      <button
-        type="button"
-        onClick={() => addOption(mIndex, qIndex)}
-        style={{
-          background: "#22c55e",
-          color: "#000",
-          border: "none",
-          borderRadius: "4px",
-          padding: "6px 12px",
-          cursor: "pointer",
-          marginBottom: "10px",
-        }}
-      >
-        ➕ Add Option
-      </button>
-    )}
+            <input
+              placeholder="Module Title"
+              value={mod.title}
+              onChange={(e) => {
+                const copy = [...modules];
+                copy[mIndex].title = e.target.value;
+                setModules(copy);
+              }}
+              style={{
+                width: "100%",
+                marginBottom: "12px",
+                padding: "10px",
+                background: "#181c2a",
+                color: "#fff",
+                border: "1px solid #39FF14",
+                borderRadius: "6px",
+                outline: "none",
+              }}
+              required
+            />
 
-    {/* Correct Answer */}
-    <input
-      placeholder="Correct Answer"
-      value={q.answer}
-      onChange={(e) => {
-        const copy = [...modules];
-        copy[mIndex].questions[qIndex].answer = e.target.value;
-        setModules(copy);
-      }}
-      style={{
-        width: "100%",
-        marginTop: "8px",
-        padding: "10px",
-        background: "#181c2a",
-        color: "#fff",
-        border: "1px solid #39FF14",
-        borderRadius: "6px",
-        outline: "none",
-      }}
-      required
-    />
-  </div>
-))}
+            {mod.questions.map((q, qIndex) => (
+              <div
+                key={qIndex}
+                style={{
+                  background: "#232323",
+                  padding: "12px",
+                  borderRadius: "8px",
+                  marginBottom: "10px",
+                  position: "relative",
+                }}
+              >
+                {/* ❌ Remove Question Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    const copy = [...modules];
+                    copy[mIndex].questions.splice(qIndex, 1);
+                    setModules(copy);
+                  }}
+                  style={{
+                    position: "absolute",
+                    top: "8px",
+                    right: "8px",
+                    background: "#ff3b3b",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "50%",
+                    width: "25px",
+                    height: "25px",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                  }}
+                  title="Remove Question"
+                >
+                  ×
+                </button>
 
-<button
-  type="button"
-  onClick={() => {
-    const copy = [...modules];
-    copy.splice(mIndex, 1);
-    setModules(copy);
-  }}
-  style={{
-    background: "#ff3b3b",
-    color: "#fff",
-    padding: "8px 14px",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    marginLeft: "10px",
-  }}
->
-  ❌ Remove Module
-</button>
+                {/* Question Input */}
+                <input
+                  placeholder="Question Text"
+                  value={q.text}
+                  onChange={(e) => {
+                    const copy = [...modules];
+                    copy[mIndex].questions[qIndex].text = e.target.value;
+                    setModules(copy);
+                  }}
+                  style={{
+                    width: "100%",
+                    marginBottom: "12px",
+                    padding: "10px",
+                    background: "#181c2a",
+                    color: "#fff",
+                    border: "1px solid #39FF14",
+                    borderRadius: "6px",
+                    outline: "none",
+                  }}
+                  required
+                />
+
+                {/* Question Type */}
+                <label style={{ color: "#22c55e", fontWeight: "bold" }}>Question Type:</label>
+                <select
+                  value={q.type}
+                  onChange={(e) => {
+                    const copy = [...modules];
+                    copy[mIndex].questions[qIndex].type = e.target.value;
+                    setModules(copy);
+                  }}
+                  style={{
+                    width: "100%",
+                    marginBottom: "10px",
+                    padding: "10px",
+                    background: "#181c2a",
+                    color: "#fff",
+                    border: "1px solid #39FF14",
+                    borderRadius: "6px",
+                    outline: "none",
+                  }}
+                >
+                  <option value="mcq">Multiple Choice (MCQ)</option>
+                  <option value="text">Descriptive (Sentence)</option>
+                </select>
+
+                {/* Options for MCQs */}
+                {q.type === "mcq" &&
+                  q.options.map((opt, optIndex) => (
+                    <div key={optIndex} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <input
+                        placeholder={`Option ${optIndex + 1}`}
+                        value={opt}
+                        onChange={(e) => {
+                          const copy = [...modules];
+                          copy[mIndex].questions[qIndex].options[optIndex] = e.target.value;
+                          setModules(copy);
+                        }}
+                        style={{
+                          flex: 1,
+                          marginBottom: "8px",
+                          padding: "10px",
+                          background: "#181c2a",
+                          color: "#fff",
+                          border: "1px solid #39FF14",
+                          borderRadius: "6px",
+                          outline: "none",
+                        }}
+                      />
+                      {/* ❌ Remove Option Button */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const copy = [...modules];
+                          copy[mIndex].questions[qIndex].options.splice(optIndex, 1);
+                          setModules(copy);
+                        }}
+                        style={{
+                          background: "#ff3b3b",
+                          color: "#fff",
+                          border: "none",
+                          borderRadius: "4px",
+                          padding: "4px 8px",
+                          cursor: "pointer",
+                        }}
+                        title="Remove Option"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+
+                {q.type === "mcq" && (
+                  <button
+                    type="button"
+                    onClick={() => addOption(mIndex, qIndex)}
+                    style={{
+                      background: "#22c55e",
+                      color: "#000",
+                      border: "none",
+                      borderRadius: "4px",
+                      padding: "6px 12px",
+                      cursor: "pointer",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    ➕ Add Option
+                  </button>
+                )}
+
+                {/* Correct Answer */}
+                <input
+                  placeholder="Correct Answer"
+                  value={q.answer}
+                  onChange={(e) => {
+                    const copy = [...modules];
+                    copy[mIndex].questions[qIndex].answer = e.target.value;
+                    setModules(copy);
+                  }}
+                  style={{
+                    width: "100%",
+                    marginTop: "8px",
+                    padding: "10px",
+                    background: "#181c2a",
+                    color: "#fff",
+                    border: "1px solid #39FF14",
+                    borderRadius: "6px",
+                    outline: "none",
+                  }}
+                  required
+                />
+              </div>
+            ))}
+
+            <button
+              type="button"
+              onClick={() => {
+                const copy = [...modules];
+                copy.splice(mIndex, 1);
+                setModules(copy);
+              }}
+              style={{
+                background: "#ff3b3b",
+                color: "#fff",
+                padding: "8px 14px",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                marginLeft: "10px",
+              }}
+            >
+              ❌ Remove Module
+            </button>
 
 
 
-      <button
-        type="button"
-        onClick={() => addQuestion(mIndex)}
-        style={{
-          background: "#22c55e",
-          color: "#000",
-          padding: "8px 14px",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-        }}
-      >
-        ➕ Add Question
-      </button>
-      
-    </div>
-  ))}
+            <button
+              type="button"
+              onClick={() => addQuestion(mIndex)}
+              style={{
+                background: "#22c55e",
+                color: "#000",
+                padding: "8px 14px",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              ➕ Add Question
+            </button>
 
-  {/* Add Module + Submit */}
-  <button
-    type="button"
-    onClick={addModule}
-    style={{
-      background: "#22c55e",
-      color: "#000",
-      marginRight: "10px",
-      padding: "10px 18px",
-      border: "none",
-      borderRadius: "6px",
-      cursor: "pointer",
-    }}
-  >
-    ➕ Add Module
-  </button>
+          </div>
+        ))}
 
-  <button
-    type="submit"
-    style={{
-      background: "#22c55e",
-      color: "#000",
-      padding: "10px 18px",
-      border: "none",
-      borderRadius: "6px",
-      cursor: "pointer",
-    }}
-  >
-    ✅ Save Lab
-  </button>
-</form>
+        {/* Add Module + Submit */}
+        <button
+          type="button"
+          onClick={addModule}
+          style={{
+            background: "#22c55e",
+            color: "#000",
+            marginRight: "10px",
+            padding: "10px 18px",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+          }}
+        >
+          ➕ Add Module
+        </button>
+
+        <button
+          type="submit"
+          style={{
+            background: "#22c55e",
+            color: "#000",
+            padding: "10px 18px",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+          }}
+        >
+          ✅ Save Lab
+        </button>
+      </form>
 
     </div>
   );

@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 30px;
+  padding: 12px 10px;
   flex-wrap: wrap;
 }
 
@@ -38,7 +38,7 @@
 .main-menu ul {
   list-style: none;
   display: flex;
-  gap: 25px;
+  gap: 15px;
   margin: 0;
   padding: 0;
   align-items: center;
@@ -104,7 +104,7 @@
   font-size: 0.95rem;
   display: block;
   white-space: nowrap;
-  transition: background 0.2s;
+  /* transition: background 0.2s; */
 }
 
 .main-menu ul li ul.submenu li a:hover {

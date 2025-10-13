@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   // Load user + token from localStorage on page load
   useEffect(() => {
-    const savedToken = localStorage.getItem("access_token");
+    const savedToken = localStorage.getItem("token");
     const savedUser = localStorage.getItem("user_data");
 
     if (savedToken && savedUser) {
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
 
   // ✅ Login function stores both token + user data
   const login = (token, userData) => {
-    localStorage.setItem("access_token", token);
+    localStorage.setItem("token", token);
     localStorage.setItem("user_data", JSON.stringify(userData));
     setToken(token);
     setUser(userData);
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
   // ✅ Logout function clears everything
   const logout = () => {
-    localStorage.removeItem("access_token");
+    localStorage.removeItem("token");
     localStorage.removeItem("user_data");
     setToken(null);
     setUser(null);
