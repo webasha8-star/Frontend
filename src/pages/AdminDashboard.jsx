@@ -572,7 +572,7 @@ const CreateLabForm = ({ token }) => {
                       marginBottom: "10px",
                     }}
                   >
-                    ➕ Add Option
+                     Add Option
                   </button>
                 )}
 
@@ -617,7 +617,7 @@ const CreateLabForm = ({ token }) => {
                 marginLeft: "10px",
               }}
             >
-              ❌ Remove Module
+               Remove Module
             </button>
 
 
@@ -634,7 +634,7 @@ const CreateLabForm = ({ token }) => {
                 cursor: "pointer",
               }}
             >
-              ➕ Add Question
+              Add Question
             </button>
 
           </div>
@@ -654,7 +654,7 @@ const CreateLabForm = ({ token }) => {
             cursor: "pointer",
           }}
         >
-          ➕ Add Module
+           Add Module
         </button>
 
         <button
@@ -668,7 +668,7 @@ const CreateLabForm = ({ token }) => {
             cursor: "pointer",
           }}
         >
-          ✅ Save Lab
+           Save Lab
         </button>
       </form>
 

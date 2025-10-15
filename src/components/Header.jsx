@@ -1,3 +1,4 @@
+
 // import React, { useContext, useState, useEffect } from "react";
 // import { Link, useNavigate, useLocation } from "react-router-dom";
 // import { AuthContext } from "../AuthContext";
@@ -12,11 +13,12 @@
 //   const [suggestions, setSuggestions] = useState([]);
 //   const [showProfileMenu, setShowProfileMenu] = useState(false);
 //   const [userRole, setUserRole] = useState(null);
-//   const [menuOpen, setMenuOpen] = useState(false); // ✅ for mobile nav toggle
+//   const [menuOpen, setMenuOpen] = useState(false);
 
 //   const navigate = useNavigate();
 //   const location = useLocation();
 
+//   // ✅ Hide header on scroll
 //   useEffect(() => {
 //     const handleScroll = () => {
 //       setHideHeader(window.scrollY > 10);
@@ -25,10 +27,11 @@
 //     return () => window.removeEventListener("scroll", handleScroll);
 //   }, []);
 
+//   // ✅ Detect role whenever login state changes
 //   useEffect(() => {
 //     const role = localStorage.getItem("role");
 //     setUserRole(role);
-//   }, []);
+//   }, [isLoggedIn]);
 
 //   const handleLogout = () => {
 //     logout();
@@ -40,6 +43,7 @@
 //     navigate("/login");
 //   };
 
+//   // ✅ Search suggestion filtering
 //   useEffect(() => {
 //     if (searchQuery.length === 0) {
 //       setSuggestions([]);
@@ -49,7 +53,7 @@
 //     const allItems = [
 //       { label: "OSCP Simulation", path: "/oscp-style-exercise" },
 //       { label: "Upcoming Challenges", path: "/upcoming-challenges" },
-//       { label: "Leaderboard", path: "/Leaderboard" },
+//       { label: "Leaderboard", path: "/leaderboard" },
 //       { label: "Testimonial", path: "/testimonial" },
 //       { label: "Training Path", path: "/training-path" },
 //       { label: "Gallery", path: "/gallery" },
@@ -62,6 +66,7 @@
 //     setSuggestions(filtered);
 //   }, [searchQuery]);
 
+//   // ✅ Handle Esc key & body scroll lock for search
 //   useEffect(() => {
 //     const handleKeyDown = (e) => {
 //       if (e.key === "Escape") {
@@ -113,6 +118,7 @@
 //                           Home
 //                         </Link>
 //                       </li>
+
 //                       <li className="has-dropdown">
 //                         <Link>Learn</Link>
 //                         <ul className="submenu">
@@ -149,6 +155,7 @@
 //                           </li>
 //                         </ul>
 //                       </li>
+
 //                       <li className="has-dropdown">
 //                         <Link>Competes</Link>
 //                         <ul className="submenu">
@@ -170,7 +177,7 @@
 //                           </li>
 //                           <li>
 //                             <Link
-//                               to="/Leaderboard"
+//                               to="/leaderboard"
 //                               onClick={() => setMenuOpen(false)}
 //                             >
 //                               Leaderboard
@@ -178,6 +185,7 @@
 //                           </li>
 //                         </ul>
 //                       </li>
+
 //                       <li className="has-dropdown">
 //                         <Link>OSCP Track</Link>
 //                         <ul className="submenu">
@@ -212,19 +220,22 @@
 //                           </li>
 //                         </ul>
 //                       </li>
+
 //                       <li>
 //                         <Link to="/blank" onClick={() => setMenuOpen(false)}>
 //                           Blog
 //                         </Link>
 //                       </li>
 
-//                       {userRole === "admin" && (
+//                       {/* ✅ Admin Menu Link */}
+//                       {userRole?.toUpperCase() === "ADMIN" && (
 //                         <li>
 //                           <Link
 //                             to="/admin-dashboard"
 //                             onClick={() => setMenuOpen(false)}
+//                             style={{ color: "#22c55e", fontWeight: "bold" }}
 //                           >
-//                             Admin Dashboard
+//                              Admin Dashboard
 //                           </Link>
 //                         </li>
 //                       )}
@@ -253,17 +264,20 @@
 
 //                   {showProfileMenu && (
 //                     <div className="profile-dropdown">
-//                       <Link to="/profile" onClick={() => setShowProfileMenu(false)}>
+//                       <Link
+//                         to="/profile"
+//                         onClick={() => setShowProfileMenu(false)}
+//                       >
 //                         My Profile
 //                       </Link>
 
-//                       {userRole === "admin" && (
+//                       {userRole?.toUpperCase() === "ADMIN" && (
 //                         <Link
 //                           to="/admin-dashboard"
-//                           style={{ color: "#0FA30F" }}
+//                           style={{ color: "#22c55e", fontWeight: "bold" }}
 //                           onClick={() => setShowProfileMenu(false)}
 //                         >
-//                           Admin Dashboard
+//                            Admin Dashboard
 //                         </Link>
 //                       )}
 
@@ -333,12 +347,10 @@
 // };
 
 // export default Header;
-
-
 import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
-import "./Header.css"; // ✅ Add CSS import
+import "./Header.css";
 
 const Header = () => {
   const { isLoggedIn, logout } = useContext(AuthContext);
@@ -354,23 +366,27 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ Hide header on scroll
+  // ✅ Detect scroll to hide header
   useEffect(() => {
-    const handleScroll = () => {
-      setHideHeader(window.scrollY > 10);
-    };
+    const handleScroll = () => setHideHeader(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ✅ Detect role whenever login state changes
+  // ✅ Fetch user role only when logged in
   useEffect(() => {
-    const role = localStorage.getItem("role");
-    setUserRole(role);
+    if (isLoggedIn) {
+      const role = localStorage.getItem("role");
+      setUserRole(role ? role.toLowerCase() : null);
+    } else {
+      setUserRole(null); // hide admin menu after logout
+    }
   }, [isLoggedIn]);
 
   const handleLogout = () => {
     logout();
+    localStorage.removeItem("role");
+    setUserRole(null);
     navigate("/");
   };
 
@@ -379,9 +395,9 @@ const Header = () => {
     navigate("/login");
   };
 
-  // ✅ Search suggestion filtering
+  // ✅ Search filtering
   useEffect(() => {
-    if (searchQuery.length === 0) {
+    if (searchQuery.trim().length === 0) {
       setSuggestions([]);
       return;
     }
@@ -402,7 +418,7 @@ const Header = () => {
     setSuggestions(filtered);
   }, [searchQuery]);
 
-  // ✅ Handle Esc key & body scroll lock for search
+  // ✅ Handle Esc key & scroll lock
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
@@ -419,9 +435,7 @@ const Header = () => {
       document.body.style.overflow = "auto";
     }
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [showSearch]);
 
   return (
@@ -429,19 +443,16 @@ const Header = () => {
       <header className={`header-1 ${hideHeader ? "hide" : ""}`}>
         <div className="container-fluid">
           <div className="header-main">
-            {/* ✅ Hamburger Menu for mobile */}
+            {/* ☰ Hamburger Menu */}
             <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
               <i className={menuOpen ? "fas fa-times" : "fas fa-bars"}></i>
             </div>
 
-            {/* ✅ Left Side (Logo + Menu) */}
+            {/* ✅ Left Section (Logo + Menu) */}
             <div className="header-left">
               <div className="logo">
                 <Link to="/" className="header-logo">
-                  <img
-                    src="/assets/img/logo/New_Logo.png"
-                    alt="CrackMeNow Logo"
-                  />
+                  <img src="/assets/img/logo/New_Logo.png" alt="CrackMeNow Logo" />
                 </Link>
               </div>
 
@@ -450,42 +461,25 @@ const Header = () => {
                   <nav id="mobile-menu">
                     <ul className={menuOpen ? "active" : ""}>
                       <li>
-                        <Link to="/" onClick={() => setMenuOpen(false)}>
-                          Home
-                        </Link>
+                        <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
                       </li>
 
                       <li className="has-dropdown">
                         <Link>Learn</Link>
                         <ul className="submenu">
                           <li>
-                            <Link
-                              to="/labs/1"
-                              onClick={() => setMenuOpen(false)}
-                            >
-                              Labs
-                            </Link>
+                            <Link to="/labs/1" onClick={() => setMenuOpen(false)}>Labs</Link>
                           </li>
                           <li>
-                            <Link>
-                              Get Certified <i className="fas fa-angle-right"></i>
-                            </Link>
+                            <Link>Get Certified <i className="fas fa-angle-right"></i></Link>
                             <ul className="submenu">
                               <li>
-                                <Link
-                                  to="/OSCP_Certificate"
-                                  onClick={() => setMenuOpen(false)}
-                                >
-                                  OSCP
-                                </Link>
+                                <Link to="/OSCP_Certificate" onClick={() => setMenuOpen(false)}>OSCP</Link>
                               </li>
                             </ul>
                           </li>
                           <li>
-                            <Link
-                              to="/oscp-style-exercise"
-                              onClick={() => setMenuOpen(false)}
-                            >
+                            <Link to="/oscp-style-exercise" onClick={() => setMenuOpen(false)}>
                               OSCP Simulations
                             </Link>
                           </li>
@@ -495,65 +489,19 @@ const Header = () => {
                       <li className="has-dropdown">
                         <Link>Competes</Link>
                         <ul className="submenu">
-                          <li>
-                            <Link
-                              to="/upcoming-challenges"
-                              onClick={() => setMenuOpen(false)}
-                            >
-                              Upcoming Challenges
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to="/historical-challenges"
-                              onClick={() => setMenuOpen(false)}
-                            >
-                              Historical Challenges
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to="/leaderboard"
-                              onClick={() => setMenuOpen(false)}
-                            >
-                              Leaderboard
-                            </Link>
-                          </li>
+                          <li><Link to="/upcoming-challenges">Upcoming Challenges</Link></li>
+                          <li><Link to="/historical-challenges">Historical Challenges</Link></li>
+                          <li><Link to="/leaderboard">Leaderboard</Link></li>
                         </ul>
                       </li>
 
                       <li className="has-dropdown">
                         <Link>OSCP Track</Link>
                         <ul className="submenu">
-                          <li>
-                            <Link
-                              to="/training-path"
-                              onClick={() => setMenuOpen(false)}
-                            >
-                              Training Path
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to="/testimonial"
-                              onClick={() => setMenuOpen(false)}
-                            >
-                              Testimonial
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to="/gallery"
-                              onClick={() => setMenuOpen(false)}
-                            >
-                              Gallery
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/faq" onClick={() => setMenuOpen(false)}>
-                              FAQ
-                            </Link>
-                          </li>
+                          <li><Link to="/training-path">Training Path</Link></li>
+                          <li><Link to="/testimonial">Testimonial</Link></li>
+                          <li><Link to="/gallery">Gallery</Link></li>
+                          <li><Link to="/faq">FAQ</Link></li>
                         </ul>
                       </li>
 
@@ -563,15 +511,15 @@ const Header = () => {
                         </Link>
                       </li>
 
-                      {/* ✅ Admin Menu Link */}
-                      {userRole?.toUpperCase() === "ADMIN" && (
+                      {/* ✅ Admin Dashboard — hidden until admin login */}
+                      {isLoggedIn && userRole === "admin" && (
                         <li>
                           <Link
                             to="/admin-dashboard"
                             onClick={() => setMenuOpen(false)}
                             style={{ color: "#22c55e", fontWeight: "bold" }}
                           >
-                             Admin Dashboard
+                            Admin Dashboard
                           </Link>
                         </li>
                       )}
@@ -581,7 +529,7 @@ const Header = () => {
               )}
             </div>
 
-            {/* ✅ Right Side (Search + Profile + Auth Buttons) */}
+            {/* ✅ Right Section (Search, Profile, Auth) */}
             <div className="header-right">
               {!showSearch && (
                 <button onClick={() => setShowSearch(true)}>
@@ -589,7 +537,7 @@ const Header = () => {
                 </button>
               )}
 
-              {isLoggedIn && (
+              {isLoggedIn ? (
                 <div className="profile-menu">
                   <button
                     onClick={() => setShowProfileMenu(!showProfileMenu)}
@@ -600,20 +548,18 @@ const Header = () => {
 
                   {showProfileMenu && (
                     <div className="profile-dropdown">
-                      <Link
-                        to="/profile"
-                        onClick={() => setShowProfileMenu(false)}
-                      >
+                      <Link to="/profile" onClick={() => setShowProfileMenu(false)}>
                         My Profile
                       </Link>
 
-                      {userRole?.toUpperCase() === "ADMIN" && (
+                      {/* ✅ Only show Admin Dashboard in profile if admin */}
+                      {userRole === "admin" && (
                         <Link
                           to="/admin-dashboard"
                           style={{ color: "#22c55e", fontWeight: "bold" }}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                           Admin Dashboard
+                          Admin Dashboard
                         </Link>
                       )}
 
@@ -621,13 +567,9 @@ const Header = () => {
                     </div>
                   )}
                 </div>
-              )}
-
-              {!isLoggedIn && (
+              ) : (
                 <>
-                  <button className="login-btn" onClick={handleLogin}>
-                    Log In
-                  </button>
+                  <button className="login-btn" onClick={handleLogin}>Log In</button>
                   <Link to="/signup">
                     <button className="join-btn">Join For Free</button>
                   </Link>
