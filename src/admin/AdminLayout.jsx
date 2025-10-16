@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { Users, FilePlus, Folder, BarChart3, Bell, Settings, Home } from "lucide-react";
+import { Users, FilePlus, Folder, BarChart3, Bell, Settings, Home , FileText } from "lucide-react";
 import Header from "../components/Header";
 
 const AdminLayout = () => {
@@ -61,8 +61,11 @@ const AdminLayout = () => {
           <NavLink to="/admin" end style={({ isActive }) => linkStyle(isActive)}>
             <Home size={18} /> Dashboard
           </NavLink>
-           <NavLink to="/admin/analytics" style={({ isActive }) => linkStyle(isActive)}>
+          <NavLink to="/admin/analytics" style={({ isActive }) => linkStyle(isActive)}>
             <BarChart3 size={18} /> Analytics
+          </NavLink>
+          <NavLink to="/admin/submissions" style={({ isActive }) => linkStyle(isActive)}>
+            <FileText size={18} /> Submissions
           </NavLink>
           <NavLink to="/admin/users" style={({ isActive }) => linkStyle(isActive)}>
             <Users size={18} /> Users

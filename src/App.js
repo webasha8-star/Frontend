@@ -130,6 +130,8 @@ import CreateLab from "./admin/labs/CreateLab";
 import UpcomingChallengesAdmin from "./admin/challenges/UpcomingChallenges";
 import HistoricalChallengesAdmin from "./admin/challenges/HistoricalChallenges";
 import AnalyticsDashboard from "./admin/analytics/AnalyticsDashboard";
+import EditLab from "./admin/labs/EditLab";
+import AdminSubmissions from "./admin/submissions/AdminSubmissions";
 import Announcements from "./admin/communication/Announcements";
 import SystemSettings from "./admin/settings/SystemSettings";
 
@@ -161,9 +163,11 @@ function App() {
           {/* 👑 Modular Admin Panel */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
+            <Route path="submissions" element={<AdminSubmissions />} />
             <Route path="users" element={<ManageUsers />} />
             <Route path="labs" element={<ManageLabs />} />
             <Route path="labs/create" element={<CreateLab />} />
+            <Route path="labs/edit/:id" element={<EditLab />} />
             <Route path="challenges" element={<UpcomingChallengesAdmin />} />
             <Route path="challenges/history" element={<HistoricalChallengesAdmin />} />
             <Route path="analytics" element={<AnalyticsDashboard />} />

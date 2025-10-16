@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const ManageLabs = () => {
   const { token } = useContext(AuthContext);
   const [labs, setLabs] = useState([]);
   const [expandedLab, setExpandedLab] = useState(null);
   const [expandedModule, setExpandedModule] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchLabs();
@@ -74,16 +76,8 @@ const ManageLabs = () => {
     >
       <div style={{ textAlign: "right", marginBottom: "15px" }}>
         <button
-          onClick={() => (window.location.href = "/admin/labs/create")}
-          style={{
-            background: "#22c55e",
-            color: "#000",
-            border: "none",
-            borderRadius: "6px",
-            padding: "10px 18px",
-            cursor: "pointer",
-            fontWeight: "600",
-          }}
+          onClick={() => navigate("/admin/labs/create")}
+          style={createBtn}
         >
           ➕ Create New Lab
         </button>
@@ -97,13 +91,34 @@ const ManageLabs = () => {
         labs.map((lab) => (
           <div key={lab.id} style={labBox}>
             <div
-              onClick={() => setExpandedLab(expandedLab === lab.id ? null : lab.id)}
+              onClick={() =>
+                setExpandedLab(expandedLab === lab.id ? null : lab.id)
+              }
               style={labHeader}
             >
               <h3 style={{ color: "#22c55e" }}>{lab.title}</h3>
-              <button onClick={(e) => { e.stopPropagation(); deleteLab(lab.id); }} style={deleteBtn}>
-                Delete Lab
-              </button>
+
+              <div style={{ display: "flex", gap: "10px" }}>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/labs/edit/${lab.id}`);
+                  }}
+                  style={editBtn}
+                >
+                  ✏️ Edit Lab
+                </button>
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteLab(lab.id);
+                  }}
+                  style={deleteBtn}
+                >
+                  Delete Lab
+                </button>
+              </div>
             </div>
 
             {expandedLab === lab.id && (
@@ -112,11 +127,21 @@ const ManageLabs = () => {
                 {lab.modules.map((mod) => (
                   <div key={mod.id} style={moduleBox}>
                     <div
-                      onClick={() => setExpandedModule(expandedModule === mod.id ? null : mod.id)}
+                      onClick={() =>
+                        setExpandedModule(
+                          expandedModule === mod.id ? null : mod.id
+                        )
+                      }
                       style={moduleHeader}
                     >
                       <h4 style={{ color: "#39FF14" }}>📘 {mod.title}</h4>
-                      <button onClick={(e) => { e.stopPropagation(); deleteModule(mod.id); }} style={deleteBtn}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteModule(mod.id);
+                        }}
+                        style={deleteBtn}
+                      >
                         Delete Module
                       </button>
                     </div>
@@ -136,8 +161,13 @@ const ManageLabs = () => {
                                   </li>
                                 ))}
                             </ul>
-                            <p style={{ color: "#22c55e" }}>✅ Correct: {q.answer}</p>
-                            <button onClick={() => deleteQuestion(q.id)} style={questionDeleteBtn}>
+                            <p style={{ color: "#22c55e" }}>
+                              ✅ Correct: {q.answer}
+                            </p>
+                            <button
+                              onClick={() => deleteQuestion(q.id)}
+                              style={questionDeleteBtn}
+                            >
                               Delete Question
                             </button>
                           </div>
@@ -158,6 +188,33 @@ const ManageLabs = () => {
 export default ManageLabs;
 
 // 🔸 Styles
+const createBtn = {
+  background: "#22c55e",
+  color: "#000",
+  border: "none",
+  borderRadius: "6px",
+  padding: "10px 18px",
+  cursor: "pointer",
+  fontWeight: "600",
+};
+const editBtn = {
+  background: "#3dff88",
+  color: "#000",
+  border: "none",
+  borderRadius: "6px",
+  padding: "6px 12px",
+  cursor: "pointer",
+  fontWeight: "600",
+};
+const deleteBtn = {
+  background: "#ff3b3b",
+  color: "#fff",
+  border: "none",
+  borderRadius: "6px",
+  padding: "6px 12px",
+  cursor: "pointer",
+  fontWeight: "600",
+};
 const labBox = {
   border: "1px solid #333",
   borderRadius: "8px",
@@ -165,7 +222,12 @@ const labBox = {
   padding: "15px",
   background: "#181c2a",
 };
-const labHeader = { display: "flex", justifyContent: "space-between", cursor: "pointer" };
+const labHeader = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  cursor: "pointer",
+};
 const moduleBox = {
   border: "1px solid #333",
   borderRadius: "8px",
@@ -173,16 +235,16 @@ const moduleBox = {
   padding: "10px",
   background: "#0f0f10",
 };
-const moduleHeader = { display: "flex", justifyContent: "space-between", cursor: "pointer" };
-const deleteBtn = {
-  background: "#ff3b3b",
-  color: "#fff",
-  border: "none",
-  borderRadius: "4px",
-  padding: "6px 10px",
+const moduleHeader = {
+  display: "flex",
+  justifyContent: "space-between",
   cursor: "pointer",
 };
-const questionBox = { borderBottom: "1px solid #333", padding: "8px 0", position: "relative" };
+const questionBox = {
+  borderBottom: "1px solid #333",
+  padding: "8px 0",
+  position: "relative",
+};
 const questionDeleteBtn = {
   position: "absolute",
   right: 0,
