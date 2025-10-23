@@ -100,6 +100,7 @@ import {
   Navigate,
 } from "react-router-dom";
 
+import NotificationPage from "./pages/NotificationPage";
 import DashboardPage from "./pages/DashboardPage";
 import OSCPStyleExercise from "./pages/OSCPStyleExercise";
 import OSCP_Certificate from "./pages/OSCP_Certificate";
@@ -151,6 +152,7 @@ function App() {
           <Route path="/upcoming-challenges" element={<UpcomingChallenges />} />
           <Route path="/historical-challenges" element={<HistoricalChallenges />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/notifications" element={<NotificationPage />} />
           <Route path="/training-path" element={<TrainingPath />} />
           <Route path="/gallery" element={<EpicGallery />} />
           <Route path="/faq" element={<OurFAQ />} />

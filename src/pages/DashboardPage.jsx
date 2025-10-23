@@ -17,7 +17,7 @@ const DashboardPage = () => {
       <MarqueeSection />
       <GameBgSection />
       <GameSection />
-      <ShopSection />
+      {/* <ShopSection /> */}
       <BrandSection />
       <NewsletterSection />
     </Layout>

@@ -531,11 +531,26 @@ const Header = () => {
 
             {/* ✅ Right Section (Search, Profile, Auth) */}
             <div className="header-right">
+              {/* ✅ Notification Bell (only for logged-in users) */}
+              {isLoggedIn && !showSearch && (
+                <button
+                  className="notification-btn"
+                  title="Notifications"
+                  onClick={() => navigate("/notifications")} // Optional: link to a notification page
+                >
+                  <i className="fas fa-bell"></i>
+                  {/* Optional: Red dot indicator */}
+                  <span className="notification-dot"></span>
+                </button>
+              )}
+
+              {/* ✅ Search Button */}
               {!showSearch && (
                 <button onClick={() => setShowSearch(true)}>
                   <i className="fas fa-search"></i>
                 </button>
               )}
+
 
               {isLoggedIn ? (
                 <div className="profile-menu">
